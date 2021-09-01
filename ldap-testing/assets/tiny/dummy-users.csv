@@ -1,0 +1,13 @@
+0,Email Address,Login,Last name,First name,Position,Groups,Comments
+1,billy@example.com,billy,Doo,William,staff,,DO NOT modify or delete this user that is used for various basic checks.
+2,jlefeuvre1@example.com,jlefeuvre1,Lefeuvre,Judicaël,staff,"cn=managers,ou=internal,ou=groups,dc=example,dc=com|cn=staff,ou=internal,ou=groups,dc=example,dc=com",
+3,jtremollet2@example.com,jtremollet2,Tremollet,Marie-Françoise,staff,"cn=managers,ou=internal,ou=groups,dc=example,dc=com|cn=staff,ou=internal,ou=groups,dc=example,dc=com",
+4,atimby3@example.com,atimby3,Atimby,Torbjörn,staff,"cn=staff,ou=internal,ou=groups,dc=example,dc=com",
+5,plboytond@example.com,pboytond,Boytond,Pål,staff,"cn=staff,ou=internal,ou=groups,dc=example,dc=com",
+6,lstreather2r@example.org,lstreather2r,Streather,Léonie,visitor,"cn=visitors,ou=external,ou=groups,dc=example,dc=com",
+7,lroskruge68@example.com,lroskruge68,Roskrug,Maïwenn,partner,"cn=partners,ou=internal,ou=groups,dc=example,dc=com",
+8,mconeley2@example.com,mconeley2,Coneley,Maï,staff,"cn=managers,ou=internal,ou=groups,dc=example,dc=com|cn=staff,ou=internal,ou=groups,dc=example,dc=com",
+9,ablondelleme@example.com,ablondelleme,Ablondelle,Mélinda,partner,"cn=partners,ou=internal,ou=groups,dc=example,dc=com",
+10,griste-ext@example.com,griste-ext,Riste,Gisèle,contractor,"cn=contractors,ou=external,ou=groups,dc=example,dc=com",
+11,ppringue-ext@example.com,ppringue-ext,Pringue,Philomène,contractor,"cn=contractors,ou=external,ou=groups,dc=example,dc=com",
+12,amotard@example.org,amotard,Motard,Alice,visitor,"cn=visitors,ou=external,ou=groups,dc=example,dc=com",

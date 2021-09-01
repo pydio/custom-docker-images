@@ -1,0 +1,140 @@
+# Subgroups for ou=dev group
+
+# Well known users to tests filtering on Cells side
+
+dn: uid=scrum001,ou=dev,ou=people,dc=example,dc=com
+changetype: add
+gidNumber: 0
+objectClass: posixAccount
+objectClass: top
+objectClass: account
+uidNumber: 1
+uid: scrum001
+homeDirectory: /home/scrum001
+cn: scrum001
+
+dn: uid=scrum002,ou=dev,ou=people,dc=example,dc=com
+changetype: add
+gidNumber: 1
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+objectClass: posixAccount
+uidNumber: 2
+uid: scrum002
+homeDirectory: /home/scrum002
+sn: Scrum team 2
+cn: scrum002
+userPassword:: UEBzc3cwcmQ=
+
+dn: uid=test001,ou=test,ou=people,dc=example,dc=com
+changetype: add
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+uid: test001
+sn: Test team 1
+cn: test001
+userPassword:: UEBzc3cwcmQ=
+
+
+# Groups definition to test MemberOf bindings:
+#   We use a tree that is distinct from the "ou=people,dc=example,dc=com" org unit 
+#   to make it easier to understand memberOf mapping on Cells side.
+
+# Folders
+dn: ou=groups,dc=example,dc=com
+changetype: add
+objectClass: organizationalUnit
+objectClass: top
+ou: groups
+
+dn: ou=unique,ou=groups,dc=example,dc=com
+changetype: add
+objectClass: organizationalUnit
+objectClass: top
+ou: unique
+
+dn: ou=internal,ou=groups,dc=example,dc=com
+changetype: add
+objectClass: organizationalUnit
+objectClass: top
+ou: internal
+
+dn: ou=external,ou=groups,dc=example,dc=com
+changetype: add
+objectClass: organizationalUnit
+objectClass: top
+ou: external
+
+dn: ou=traversal,ou=groups,dc=example,dc=com
+changetype: add
+objectClass: organizationalUnit
+objectClass: top
+ou: traversal
+
+
+# Effective groups
+dn: cn=managers,ou=internal,ou=groups,dc=example,dc=com
+changetype: add
+objectClass: groupOfNames
+objectClass: top
+# Note: the groupOfNames class makes the member attribute mandatory. 
+# This means that it is not possible to create an empty group.
+member: uid=test001,ou=test,ou=people,dc=example,dc=com
+cn: managers
+
+dn: cn=staff,ou=internal,ou=groups,dc=example,dc=com
+changetype: add
+objectClass: groupOfNames
+objectClass: top
+member: uid=test001,ou=test,ou=people,dc=example,dc=com
+cn: staff
+
+dn: cn=partners,ou=internal,ou=groups,dc=example,dc=com
+changetype: add
+objectClass: groupOfNames
+objectClass: top
+member: uid=test001,ou=test,ou=people,dc=example,dc=com
+cn: partners
+
+dn: cn=contractors,ou=external,ou=groups,dc=example,dc=com
+changetype: add
+objectClass: groupOfNames
+objectClass: top
+member: uid=test001,ou=test,ou=people,dc=example,dc=com
+cn: contractors
+
+dn: cn=visitors,ou=external,ou=groups,dc=example,dc=com
+changetype: add
+objectClass: groupOfNames
+objectClass: top
+member: uid=test001,ou=test,ou=people,dc=example,dc=com
+cn: visitors
+
+# Test modifying an existing group
+dn: cn=staff,ou=internal,ou=groups,dc=example,dc=com
+changetype: modify
+add: member
+member: uid=scrum001,ou=dev,ou=people,dc=example,dc=com
+
+# Test group of unique name
+dn: uid=nmu01,ou=nomemberof,ou=people,dc=example,dc=com
+changetype: add
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+uid: nmu01
+userPassword:: UEBzc3cwcmQ=
+sn: nmu01
+cn: nmu01
+
+dn: cn=gunique,ou=unique,ou=groups,dc=example,dc=com
+changetype: add
+objectClass: groupOfUniqueNames
+objectClass: top
+uniqueMember: uid=nmu01,ou=nomemberof,ou=people,dc=example,dc=com
+cn: gunique

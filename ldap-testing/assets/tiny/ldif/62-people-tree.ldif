@@ -1,0 +1,61 @@
+# In this file we define the tree structure that is used to order the "person objects"
+
+# Parent container (~ folder for other objects)
+dn: ou=people,dc=example,dc=com
+changetype: add
+objectClass: organizationalUnit
+objectClass: top
+ou: people
+
+# Main children
+dn: ou=partner,ou=people,dc=example,dc=com
+changetype: add
+objectClass: organizationalUnit
+objectClass: top
+ou: partner
+
+dn: ou=staff,ou=people,dc=example,dc=com
+changetype: add
+objectClass: organizationalUnit
+objectClass: top
+ou: staff
+
+dn: ou=contractor,ou=people,dc=example,dc=com
+changetype: add
+objectClass: organizationalUnit
+objectClass: top
+ou: contractor
+
+dn: ou=visitor,ou=people,dc=example,dc=com
+changetype: add
+objectClass: organizationalUnit
+objectClass: top
+ou: visitor
+
+dn: ou=dev,ou=people,dc=example,dc=com
+changetype: add
+objectClass: organizationalUnit
+objectClass: top
+ou: dev
+
+dn: ou=test,ou=people,dc=example,dc=com
+changetype: add
+objectClass: organizationalUnit
+objectClass: top
+ou: test
+
+dn: ou=nomemberof,ou=people,dc=example,dc=com
+changetype: add
+objectClass: organizationalUnit
+objectClass: top
+ou: nomemberof
+#description: for users that have *no* MemberOf attributes 
+
+#dn: ou=testusernumber,ou=people,dc=example,dc=com
+#changetype: add
+#objectClass: organizationalUnit
+#objectClass: top
+#ou: tetestusernumber
+
+
+
