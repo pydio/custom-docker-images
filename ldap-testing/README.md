@@ -14,6 +14,10 @@ To launch the image simply run:
 docker run --rm -p "389:389" pydio/ldap-testing:tiny --loglevel debug
 ```
 
+You can then simply bind to the LDAP with admin user: `cn=admin,dc=example,dc=com / admin`.
+
+All other users password is `P@ssw0rd` by default.
+
 ## How To Use
 
 ### Pre-requisite
@@ -50,6 +54,52 @@ This:
 
 - generates dummy ldif files with users and groups
 - generates and publishes the docker image
+
+## Configure connector in Pydio Cells
+
+If you are running a Pydio Cells _Enterprise_ or _Connect_ distribution, you can then simply add a connector to import the users from the newly created LDAP.
+
+If you have left everything to its default:
+
+Go to: `Admin Console >> Identity management >> Authentication >> AD / LDAP >> +Directory`
+
+In **General Options** tab:
+
+- Choose a human friendly label
+- Define a synchronisation rate: Cells internal repository is an automated copy of a sub part of your LDAP. Thus at next sync, any modification made in your _main_ repo will be propagated to Cells and any change directly made via Cells will be overwritten.
+
+In **Server Connection** tab:
+
+- Host: Define your host (usually `localhost` if you have launched a simple container or `<the name of your service>` in docker compose)
+- Connection Type: Not secure is OK for a quick test
+- Binding DN: dn of a power user, in our case, `cn=admin,dc=example,dc=com`
+- Binding Password: by default, `admin`
+
+In **Users Filter** tab:
+
+- DN: `dc=example,dc=com`
+- Filter: `(objectClass=inetOrgPerson)`
+- ID Attribute Name: `uid`
+
+In **Simple Mapping** tab, you can link attribute values that are defined in the LDAP to user properties in Cells, typically:
+
+- `displayName` attribute (Left) to `Display Name` (Right) prop in Cells
+- `mail` to `Email`
+
+In **MemberOf** tab, you can link memberOf attributes of the LDAP to **Roles** in Cells. You can then define permissions based on these automatically created roles on Cells side. Typically to give access to a given workspace only if a LDAP user is member of `cn=VIPs,ou=traversal,ou=groups,dc=example,dc=com` group in your LDAP.
+
+- Turn on the `Enable MemberOf Mapping` toggle
+- Mapping:
+  - Left Attribute: `memberOf`
+  - Rule String: ` ` (keep empty)
+  - Right Attribute: `Roles` (keep default)
+- Groups Filtering:
+  - DN: `ou=groups,dc=example,dc=com`
+  - Filter: `(objectClass=groupOfNames)`
+- Leave everything else unchanged
+
+Just save and you can then manually trigger a first resync of the user repository by going to:  
+`Admin Console >> Cells Flow >> (Your ConnectionLabel) > Synchronize external directories  >> RUN NOW`
 
 ## How To Build a Custom Image
 

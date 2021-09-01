@@ -16,7 +16,8 @@ LDAP_CONFIG_PASSWORD: admin
 
 LDAP_READONLY_USER: true
 LDAP_READONLY_USER_USERNAME: readonly
-LDAP_READONLY_USER_PASSWORD: Passw0rd!
+LDAP_READONLY_USER_PASSWORD: P@ssw0rd
+#Note: P@ssw0rd is also the default password for all users defined in the CSV
 
 # TLS
 LDAP_TLS: false

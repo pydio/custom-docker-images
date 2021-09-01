@@ -22,7 +22,6 @@ prepare: clean
 	@mkdir -p ./build/bootstrap
 	@cp -R ./assets/$(TAG)/ldif ./build/bootstrap 
 	@php ./scripts/generate-users-ldif.php $(CURR_DIR)/assets/$(TAG)/dummy-users.csv $(BASE_DN) >> ./build/bootstrap/ldif/70-users.ldif
-	@cp -R ./assets/schema ./build/bootstrap 
 	@cp -R ./assets/environment ./build
 	@cp -R ./assets/certs ./build 
 
