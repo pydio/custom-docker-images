@@ -11,8 +11,12 @@ The generated images are then uploaded to [the Docker hub](https://hub.docker.co
 To launch the image simply run:
 
 ```sh
-docker run --rm -p "389:389" pydio/ldap-testing:tiny --loglevel debug
+docker run --rm -p "389:389" pydio/ldap-testing:tiny
+# or, for a more "permanent" instance 
+docker run -i -t -d -p "389:389" --restart=always pydio/ldap-testing:tiny
 ```
+
+You can use the `--loglevel debug` flag to see more relevant info.
 
 You can then simply bind to the LDAP with admin user: `cn=admin,dc=example,dc=com / admin`.
 
