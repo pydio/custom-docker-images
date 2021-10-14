@@ -1,6 +1,6 @@
 FROM golang:alpine as forge
 
-# Install MailHog:
+# Build MailHog:
 RUN apk --no-cache add --virtual build-dependencies \
     git \
   && mkdir -p /root/go \
@@ -9,25 +9,25 @@ RUN apk --no-cache add --virtual build-dependencies \
 
 FROM alpine
 
-# Install stunnel
+# Install stunnel  
 RUN apk add --no-cache stunnel
 
 # Prepare layout
-RUN mkdir -p /opt/mailhog/{bin,run} \
-  && adduser -D -u 1000 mailhog \
-  && chown -R mailhog:mailhog /opt/mailhog 
+RUN mkdir -p /opt/mailhog/bin /etc/stunnel 
+COPY docker-entrypoint.sh /opt/mailhog/bin/docker-entrypoint.sh
+COPY stunnel.conf /etc/stunnel/stunnel.conf
+COPY --from=forge /root/go/bin/MailHog /opt/mailhog/bin/mailhog
 
-COPY --from=forge /root/go/bin/MailHog /usr/local/bin/
+RUN chmod +x /opt/mailhog/bin/docker-entrypoint.sh \
+  && chmod +x /opt/mailhog/bin/mailhog \
+  && ln -s /opt/mailhog/bin/mailhog /bin/mailhog \
+  && ln -s /opt/mailhog/bin/docker-entrypoint.sh /bin/docker-entrypoint.sh 
 
 ENV CAROOT /var/certs
 ENV MH_UI_WEB_PATH mailhog
-ENV MH_HOSTNAME localhost
-
-#USER mailhog
-#WORKDIR /home/mailhog
+ENV MH_HOSTNAME mailhog
 
 # Expose the SMTP and HTTP ports:
-EXPOSE 425 1025 8025
+EXPOSE 465 1025 8025
 
 ENTRYPOINT ["docker-entrypoint.sh"]
-#CMD ["stunnel"]
