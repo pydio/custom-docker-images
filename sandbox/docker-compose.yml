@@ -3,14 +3,14 @@ version: '3.7'
 services:
     
     certs:
-        image: pydio/images:mkcert-1.0.0
+        image: pydio/custom-images:mkcert-0.9.0
         volumes:
             - ./certs:/var/certs
         environment:
             - DOMAINS=mailhog,cells
             
     mailhog:
-        image: pydio/images:mailhog-1.0.0
+        image: pydio/custom-images:mailhog-0.9.0    
         hostname: mailhog
         volumes:
             - ./certs:/var/certs
