@@ -1,9 +1,9 @@
 # Build Mailhog with go 16
-FROM golang:1.16.9 as builder
+FROM golang:1.16.9-alpine as builder
+
+RUN apk --no-cache add --virtual build-dependencies git
 RUN cd /go && export GO111MODULE=off && \
-    go get -d -v -u github.com/mailhog/MailHog && \
-    cd src/github.com/mailhog/MailHog && \
-    go build -o /bin/mailhog
+    go get github.com/mailhog/MailHog
 
 # Final image is based on latest alpine to be as small as possible
 FROM alpine
@@ -14,11 +14,13 @@ RUN apk add --no-cache stunnel
 RUN mkdir -p /etc/stunnel 
 
 # Provision assets and make executable
-COPY docker-entrypoint.sh /bin/docker-entrypoint.sh
+COPY docker-entrypoint.sh /etc/docker-entrypoint.sh
 COPY stunnel.conf /etc/stunnel/stunnel.conf
-COPY --from=builder /bin/mailhog /bin/mailhog
-RUN chmod +x /bin/docker-entrypoint.sh \
-  && chmod +x /bin/mailhog
+COPY --from=builder /go/bin/MailHog /etc/mailhog/mailhog
+RUN chmod +x /etc/docker-entrypoint.sh \
+  && chmod +x /etc/mailhog/mailhog \
+  && ln -s /etc/mailhog/mailhog /bin/mailhog \
+  && ln -s /etc/docker-entrypoint.sh /bin/docker-entrypoint.sh 
 
 # Configure ENV
 ENV CAROOT /var/certs
