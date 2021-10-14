@@ -1,10 +1,10 @@
 # Build mkcert binary in another bigger container intrumented with go, git,...
-FROM golang:1.15.15 as builder
+FROM golang:1.16.9 as builder
 
 RUN cd /go && \
-    go get -u github.com/FiloSottile/mkcert && \
-    cd src/github.com/FiloSottile/mkcert && \
-    go build -o /bin/mkcert
+  go get -u filippo.io/mkcert && \
+  cd src/filippo.io/mkcert && \
+  go build -o /bin/mkcert
 
 FROM busybox:glibc
 COPY --from=builder /bin/mkcert /var/mkcert/bin/mkcert

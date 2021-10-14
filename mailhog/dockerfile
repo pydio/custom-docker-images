@@ -1,11 +1,10 @@
-FROM golang:alpine as forge
+FROM golang:1.16.9 as builder
 
-# Build MailHog:
-RUN apk --no-cache add --virtual build-dependencies \
-    git \
-  && mkdir -p /root/go \
-  && export GOPATH=/root/go \
-  && go get github.com/mailhog/MailHog
+RUN cd /go && \
+    go get -u github.com/mailhog/MailHog && \
+    ls -lsah src/github.com/mailhog && \
+    cd src/github.com/mailhog/MailHog && \
+    go build -o /bin/mailhog
 
 FROM alpine
 
@@ -13,15 +12,13 @@ FROM alpine
 RUN apk add --no-cache stunnel
 
 # Prepare layout
-RUN mkdir -p /opt/mailhog/bin /etc/stunnel 
-COPY docker-entrypoint.sh /opt/mailhog/bin/docker-entrypoint.sh
+RUN mkdir -p /etc/stunnel 
+COPY docker-entrypoint.sh /bin/docker-entrypoint.sh
 COPY stunnel.conf /etc/stunnel/stunnel.conf
-COPY --from=forge /root/go/bin/MailHog /opt/mailhog/bin/mailhog
+COPY --from=builder /bin/mailhog /bin/mailhog
 
-RUN chmod +x /opt/mailhog/bin/docker-entrypoint.sh \
-  && chmod +x /opt/mailhog/bin/mailhog \
-  && ln -s /opt/mailhog/bin/mailhog /bin/mailhog \
-  && ln -s /opt/mailhog/bin/docker-entrypoint.sh /bin/docker-entrypoint.sh 
+RUN chmod +x /bin/docker-entrypoint.sh \
+  && chmod +x /bin/mailhog
 
 ENV CAROOT /var/certs
 ENV MH_UI_WEB_PATH mailhog
