@@ -2,12 +2,10 @@
 FROM golang:1.16.9 as builder
 
 RUN cd /go && \
-  go get -u filippo.io/mkcert && \
-  cd src/filippo.io/mkcert && \
-  go build -o /bin/mkcert
+  go install filippo.io/mkcert@v1.4.3
 
 FROM busybox:glibc
-COPY --from=builder /bin/mkcert /var/mkcert/bin/mkcert
+COPY --from=builder /go/bin/mkcert /var/mkcert/bin/mkcert
 COPY docker-entrypoint.sh /bin/docker-entrypoint.sh
 
 # Final configuration
@@ -18,4 +16,3 @@ ENV CAROOT /var/certs
 
 ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["mkcert"]
-
