@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
 
-## Launch stunnel
+## stunnel must be launched first and in background 
 stunnel
 
-## Launch mailhog
-/bin/mailhog
+## Launch mailhog in foreground
+mailhog
