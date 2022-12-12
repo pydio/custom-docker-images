@@ -4,7 +4,7 @@ IMG_NAME=ldap-testing
 NAME=$(OWNER)/$(IMG_NAME)
 CURR_DIR=$(shell pwd)
 # we build a tiny image by default
-TAG ?= tiny
+TAG?=tiny
 # this is the base DN for the generated user and group repository
 BASE_DN="dc=example,dc=com"
 
