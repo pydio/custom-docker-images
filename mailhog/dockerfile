@@ -1,4 +1,4 @@
-FROM golang:1.19.4-alpine as builder
+FROM golang:1.19-alpine as builder
 
 RUN apk --no-cache add --virtual build-dependencies git
 RUN cd /go && export GO111MODULE=off && \
