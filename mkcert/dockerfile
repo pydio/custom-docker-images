@@ -1,6 +1,6 @@
 # Build mkcert binary using the latest Debian image from the golang Docker repo
 #   instrumented with go, git, etc.
-FROM golang:1.19 as builder
+FROM golang:1.21 as builder
 
 RUN cd /go && \
   go install filippo.io/mkcert@v1.4.4
